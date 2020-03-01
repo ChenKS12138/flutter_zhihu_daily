@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zhihu_daily/model/newsList.dart';
 import '../api/api.dart';
 import '../components/newsListItem.dart';
+import '../components/drawer.dart';
 
 class Index extends StatefulWidget {
   @override
@@ -44,9 +45,21 @@ class IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("首页")),
-        body: ListView(
-            children:
-                stories.map((item) => NewsListItem(intro: item)).toList()));
+      appBar: AppBar(title: Text("首页")),
+      body: ListView(
+          children: stories.length == 0
+              ? [
+                  LinearProgressIndicator(
+                    backgroundColor: Colors.grey[200],
+                    valueColor: AlwaysStoppedAnimation(Colors.blue),
+                  )
+                ]
+              : stories
+                  .map((item) => NewsListItem(
+                        intro: item,
+                      ))
+                  .toList()),
+      drawer: MyDrawer(),
+    );
   }
 }
