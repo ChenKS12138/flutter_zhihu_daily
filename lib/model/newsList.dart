@@ -4,7 +4,7 @@ class ZhDailyNewsIntro {
   final String url;
   final String hint;
   final String gaPrefix; //供Google Analytice使用
-  final List<String> images;
+  final String image;
   final int type;
   final int id;
   ZhDailyNewsIntro(
@@ -13,12 +13,12 @@ class ZhDailyNewsIntro {
       this.url,
       this.hint,
       this.gaPrefix,
-      this.images,
+      this.image,
       this.type,
       this.id});
   @override
   String toString() =>
-      "ZhDailyNewsIntro {imageHue:$imageHue,title:$title,url:$url,hint:$hint,gaPrefix:$gaPrefix,images:$images,type:$type,id:$id}";
+      "ZhDailyNewsIntro {imageHue:$imageHue,title:$title,url:$url,hint:$hint,gaPrefix:$gaPrefix,image:$image,type:$type,id:$id}";
 }
 
 class ZhDailyNewsList {
@@ -38,7 +38,7 @@ class ZhDailyNewsList {
           hint: item["hint"],
           id: item["id"],
           imageHue: item["image_hue"],
-          images: List.from(item["images"] ?? []),
+          image: item["image"] ?? List.from(item["images"] ?? []).elementAt(0),
           title: item["title"],
           type: item["type"],
           url: item["url"]))
