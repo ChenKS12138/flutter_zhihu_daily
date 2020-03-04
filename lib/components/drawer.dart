@@ -10,8 +10,8 @@ class MyDrawer extends StatelessWidget {
                 decoration: BoxDecoration(color: Colors.blueGrey),
               ),
             ),
-            DrawerItem(text: '首页', routeName: '/'),
-            DrawerItem(text: '关于', routeName: '/about')
+            DrawerItem(text: '首页', routeName: 'index'),
+            DrawerItem(text: '关于', routeName: 'about')
           ],
         ),
       );

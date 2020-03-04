@@ -5,7 +5,8 @@ import '../pages/detail.dart';
 import '../pages/index.dart';
 
 Map<String, Widget Function(BuildContext)> myRoute = {
-  '/': (context) => Index(),
-  '/detail': (context) => Detail(),
-  '/about': (context) => About()
+  Index.routeName: (context) => Index(),
+  Detail.routeName: (context) =>
+      Detail(id: Map.from(ModalRoute.of(context).settings.arguments)["id"]),
+  About.routeName: (context) => About()
 };

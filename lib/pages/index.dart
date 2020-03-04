@@ -5,6 +5,7 @@ import '../components/newsListItem.dart';
 import '../components/drawer.dart';
 
 class Index extends StatefulWidget {
+  static const String routeName = 'index';
   @override
   State<StatefulWidget> createState() => IndexState();
 }

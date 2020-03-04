@@ -6,7 +6,8 @@ class NewsListItem extends StatelessWidget {
   NewsListItem({this.intro});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      child: Container(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -39,6 +40,11 @@ class NewsListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
         ),
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(20));
+        padding: EdgeInsets.all(20),
+      ),
+      onTap: () {
+        Navigator.of(context).pushNamed('detail', arguments: {"id": intro.id});
+      },
+    );
   }
 }

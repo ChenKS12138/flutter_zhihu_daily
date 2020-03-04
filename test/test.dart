@@ -9,5 +9,18 @@ const String raw2 =
 
 void main(List<String> args) async {
   var document = parse.parse(raw2, generateSpans: true);
+  // var a = document
+  //     .querySelector(".content")
+  //     .children
+  //     .map((child) => child.nodes.map((node) {
+  //           if (node.nodeType == Node.TEXT_NODE) {
+  //             return node;
+  //           } else if (node is Element) {
+  //             return node.localName.toString();
+  //           } else {
+  //             return null;
+  //           }
+  //         }).toList())
+  //     .fold([], (prev, current) => prev + current);
   print(document.body.innerHtml);
 }
