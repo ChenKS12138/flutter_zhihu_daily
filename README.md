@@ -1,16 +1,13 @@
 # zhihu_daily
+flutter版的知乎日报
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Todo
+- [x] 应用的基本的路由
+- [x] 获取api的信息
+- [ ] 富文本的处理
+- [ ] 详情页滑动切换文章
+- [ ] 首页的轮播
+- [ ] 首页显示文章的日期
+- [ ] 侧边栏的完善
+- [ ] 详情页的分享
+- [ ] 查看文章评论
