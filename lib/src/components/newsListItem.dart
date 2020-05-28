@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zhihu_daily/model/newsList.dart';
+
+import '../model/newsList.dart';
 
 class NewsListItem extends StatelessWidget {
   final ZhDailyNewsIntro intro;

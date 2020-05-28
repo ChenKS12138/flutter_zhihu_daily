@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:zhihu_daily/model/newsList.dart';
+
 import '../api/api.dart';
-import '../components/newsListItem.dart';
 import '../components/drawer.dart';
+import '../components/newsListItem.dart';
+import '../model/newsList.dart';
 
 class Index extends StatefulWidget {
   static const String routeName = 'index';
