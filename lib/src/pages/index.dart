@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../components/newsListItem.dart';
 import '../api/api.dart';
+import '../components/dateLine.dart';
 import '../components/drawer.dart';
 import '../components/loading.dart';
-import '../components/newsListItem.dart';
 import '../model/newsList.dart';
 
 class Index extends StatefulWidget {
@@ -80,12 +81,21 @@ class IndexState extends State<Index> {
         alignment: Alignment.center,
       ));
     }
-
     return render(ListView(
-      children: stories
-          .map((story) => NewsListItem(
-                intro: story,
-              ))
+      children: newsLists
+          .map((list) {
+            return [
+              DateLine(
+                time: list.date,
+              ),
+              ...list.stories
+                  .map((story) => NewsListItem(
+                        intro: story,
+                      ))
+                  .toList()
+            ];
+          })
+          .fold(List<Widget>(), (prev, current) => prev + current)
           .toList(),
     ));
   }
