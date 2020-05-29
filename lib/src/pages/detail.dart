@@ -13,20 +13,25 @@ class Detail extends StatefulWidget {
 }
 
 class DetailState extends State<Detail> {
+  // 文章的标题
   String title;
+
+  // 顶部头图的url
   String headImageUrl;
+
+  // 顶部头图的来源
   String headImageResource;
+
+  // 富文本内容
   String htmlBody;
-  bool loadReady = false;
   @override
   void initState() {
-    Api.getNewsDetail(id: widget.id).then((res) {
+    Api.getNewsDetail(id: widget.id).then((result) {
       this.setState(() {
-        this.loadReady = true;
-        this.htmlBody = res.body;
-        this.title = res.title;
-        this.headImageUrl = res.image;
-        this.headImageResource = res.imageSource;
+        this.htmlBody = result.body;
+        this.title = result.title;
+        this.headImageUrl = result.image;
+        this.headImageResource = result.imageSource;
       });
     });
     super.initState();
@@ -42,23 +47,26 @@ class DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
-    Widget body = Text("loading...");
-    ZhText data = Html2Widget.parseZhText(htmlText: htmlBody);
-
-    if (data == null) {
+    // 显示loading
+    if (htmlBody == null) {
       return render(Container(
         child: Loading(),
         alignment: Alignment.center,
       ));
     }
+
+    ZhText data = Html2Widget.parseZhText(htmlText: htmlBody);
     const headColor = Color.fromRGBO(145, 111, 118, 1);
+    Size size = MediaQuery.of(context).size;
+
     return render(ListView(
-      // children: <Widget>[Text("test")],
       children: [
         Stack(
           children: <Widget>[
             Image(
               image: NetworkImage(headImageUrl ?? ""),
+              width: size.width,
+              height: size.height * 0.6,
             ),
             Positioned(
               child: Container(
