@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../api/api.dart';
 import '../components/drawer.dart';
+import '../components/loading.dart';
 import '../components/newsListItem.dart';
 import '../model/newsList.dart';
 
@@ -12,20 +13,43 @@ class Index extends StatefulWidget {
 }
 
 class IndexState extends State<Index> {
+  // 以往的每日的新闻列表
   List<ZhDailyNewsList> newsListsBefore;
+
+  // 今日的新闻列表
   ZhDailyNewsList newsListToday;
+
+  // 所有的新闻列表
   List<ZhDailyNewsIntro> get stories =>
       (newsListToday?.stories ?? []) +
       (newsListsBefore?.fold(List<ZhDailyNewsIntro>(),
               (prev, current) => prev + current.stories) ??
           []);
 
+  List<ZhDailyNewsList> get newsLists => List.from(newsListsBefore ?? [])
+    ..add(newsListToday)
+    ..removeWhere((x) => x == null);
+
+  // 往前的日期
+  List backDays = [0, 1, 2];
+
   @override
   void initState() {
+    super.initState();
+    this.fetchNewsListBefore();
+    // 获取今日stories
+    Api.getNewsListNow().then((res) {
+      setState(() {
+        this.newsListToday = res;
+      });
+    });
+  }
+
+  void fetchNewsListBefore() {
     // 获取以往stories
     final DateTime now = DateTime.now();
-    List backDays = [0, 1, 2];
-    Future.wait(backDays
+    Future.wait(this
+            .backDays
             .map((backDay) =>
                 Api.getNewsList(time: now.add(Duration(days: -backDay))))
             .toList())
@@ -35,33 +59,34 @@ class IndexState extends State<Index> {
         this.newsListsBefore = res;
       });
     });
-    // 获取今日stories
-    Api.getNewsListNow().then((res) {
-      setState(() {
-        this.newsListToday = res;
-      });
-    });
-    super.initState();
+  }
+
+  Widget render(Widget child) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("首页"),
+      ),
+      drawer: MyDrawer(),
+      body: child,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("首页")),
-      body: ListView(
-          children: stories.length == 0
-              ? [
-                  LinearProgressIndicator(
-                    backgroundColor: Colors.grey[200],
-                    valueColor: AlwaysStoppedAnimation(Colors.blue),
-                  )
-                ]
-              : stories
-                  .map((item) => NewsListItem(
-                        intro: item,
-                      ))
-                  .toList()),
-      drawer: MyDrawer(),
-    );
+    // 显示loading
+    if (newsListToday == null && newsListsBefore == null) {
+      return render(Container(
+        child: Loading(),
+        alignment: Alignment.center,
+      ));
+    }
+
+    return render(ListView(
+      children: stories
+          .map((story) => NewsListItem(
+                intro: story,
+              ))
+          .toList(),
+    ));
   }
 }

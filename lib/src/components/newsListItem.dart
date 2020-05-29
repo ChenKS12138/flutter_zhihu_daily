@@ -17,10 +17,10 @@ class NewsListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    intro?.title ?? "瞎扯 · 如何正确地吐槽123",
+                    intro?.title ?? "暂无标题",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  Text(intro?.hint ?? "江泓 · 2分钟阅读123",
+                  Text(intro?.hint ?? "暂无hint",
                       style:
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w400)),
                 ],
@@ -31,8 +31,7 @@ class NewsListItem extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: Image(
-                      image: NetworkImage(intro.image ??
-                          "https://pic4.zhimg.com/v2-7ea40e6682e70bc6846f2fa88f5ce86b.jpg"),
+                      image: NetworkImage(intro?.image ?? ""),
                       width: 80,
                       height: 80)),
               flex: 3,
