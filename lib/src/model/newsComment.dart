@@ -22,6 +22,9 @@ class ZhDailyNewsCommentItem {
 
 class ZhDailyNewsComment {
   final List<ZhDailyNewsCommentItem> comments;
+
+  int get count => comments?.length ?? 0;
+
   ZhDailyNewsComment({this.comments});
   ZhDailyNewsComment.fromJson(Map data)
       : comments = List.from(data["comments"] ?? [])
@@ -29,5 +32,5 @@ class ZhDailyNewsComment {
             .toList();
 
   @override
-  String toString() => "ZhDailyNewsComment {comment: $comments}";
+  String toString() => "ZhDailyNewsComment {comments: $comments}";
 }

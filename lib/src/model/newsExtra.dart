@@ -12,5 +12,5 @@ class ZhDailyNewsExtra {
         comments = data["comments"];
   @override
   String toString() =>
-      "ZhDailyNewsExtra {longComments:$longComments,popularity:$popularity,shortComments:$shortComments,comment:$comments}";
+      "ZhDailyNewsExtra {longComments:$longComments,popularity:$popularity,shortComments:$shortComments,comments:$comments}";
 }
