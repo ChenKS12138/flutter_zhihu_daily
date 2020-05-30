@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../components/newsListItem.dart';
 import '../api/api.dart';
 import '../components/dateLine.dart';
 import '../components/drawer.dart';
 import '../components/loading.dart';
+import '../components/newsListItem.dart';
 import '../model/newsList.dart';
 
 class Index extends StatefulWidget {
@@ -15,50 +15,49 @@ class Index extends StatefulWidget {
 
 class IndexState extends State<Index> {
   // 以往的每日的新闻列表
-  List<ZhDailyNewsList> newsListsBefore;
+  List<ZhDailyNewsList> newsListsBefore = List();
 
   // 今日的新闻列表
-  ZhDailyNewsList newsListToday;
+  //  ZhDailyNewsList newsListToday;
 
   // 所有的新闻列表
-  List<ZhDailyNewsIntro> get stories =>
-      (newsListToday?.stories ?? []) +
-      (newsListsBefore?.fold(List<ZhDailyNewsIntro>(),
-              (prev, current) => prev + current.stories) ??
-          []);
-
-  List<ZhDailyNewsList> get newsLists => List.from(newsListsBefore ?? [])
-    ..add(newsListToday)
-    ..removeWhere((x) => x == null);
+  List<ZhDailyNewsList> get newsLists =>
+      List.from(newsListsBefore ?? [])..removeWhere((x) => x == null);
 
   // 往前的日期
-  List backDays = [0, 1, 2];
+  int backDays = 0;
+
+  // 加载锁
+  bool loadLock = false;
+
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    this.fetchNewsListBefore();
-    // 获取今日stories
-    Api.getNewsListNow().then((res) {
-      setState(() {
-        this.newsListToday = res;
-      });
+    appendNewsListBefore();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        appendNewsListBefore();
+      }
     });
   }
 
-  void fetchNewsListBefore() {
-    // 获取以往stories
+  void appendNewsListBefore() {
+    if (loadLock) return;
+    loadLock = true;
     final DateTime now = DateTime.now();
-    Future.wait(this
-            .backDays
-            .map((backDay) =>
-                Api.getNewsList(time: now.add(Duration(days: -backDay))))
-            .toList())
-        .then((res) {
-      res.sort((a, b) => a.date.isBefore(b.date) ? 1 : 0);
-      this.setState(() {
-        this.newsListsBefore = res;
+    Api.getNewsList(time: now.add(Duration(days: -(backDays++))))
+        .then((result) {
+      newsListsBefore.add(result);
+      setState(() {
+        newsListsBefore = newsListsBefore;
+        loadLock = false;
       });
+    }).catchError((error) {
+      print(error);
+      loadLock = false;
     });
   }
 
@@ -75,7 +74,7 @@ class IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
     // 显示loading
-    if (newsListToday == null && newsListsBefore == null) {
+    if (newsLists.length == 0) {
       return render(Container(
         child: Loading(),
         alignment: Alignment.center,
@@ -97,6 +96,7 @@ class IndexState extends State<Index> {
           })
           .fold(List<Widget>(), (prev, current) => prev + current)
           .toList(),
+      controller: scrollController,
     ));
   }
 }

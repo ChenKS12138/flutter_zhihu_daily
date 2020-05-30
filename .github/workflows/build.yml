@@ -1,4 +1,4 @@
-name: build_android
+name: build
 on: push
 
 jobs:

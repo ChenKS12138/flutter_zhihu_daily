@@ -26,6 +26,7 @@ class DetailState extends State<Detail> {
   String htmlBody;
   @override
   void initState() {
+    super.initState();
     Api.getNewsDetail(id: widget.id).then((result) {
       this.setState(() {
         this.htmlBody = result.body;
@@ -34,15 +35,18 @@ class DetailState extends State<Detail> {
         this.headImageResource = result.imageSource;
       });
     });
-    super.initState();
+    Api.getNewsExtra(id: widget.id).then((result) {
+      print(result);
+    });
   }
 
   Widget render(Widget child) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("详情"),
-        ),
-        body: child);
+      appBar: AppBar(
+        title: Text("详情"),
+      ),
+      body: child,
+    );
   }
 
   @override
@@ -122,6 +126,14 @@ class DetailState extends State<Detail> {
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
           padding: EdgeInsets.only(top: 40, bottom: 40, left: 20, right: 20),
+        ),
+        Container(
+          child: Text(
+            "到底部啦～",
+            style: TextStyle(fontSize: 16, color: Colors.black87),
+            textAlign: TextAlign.center,
+          ),
+          padding: EdgeInsets.only(bottom: 10),
         )
       ],
     ));
