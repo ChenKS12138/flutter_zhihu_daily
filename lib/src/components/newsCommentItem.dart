@@ -7,7 +7,7 @@ class NewsCommentItem extends StatelessWidget {
   NewsCommentItem({this.comment});
 
   convertDateText(DateTime time) =>
-      "${time.month}-${time.day} ${time.hour}:${time.minute}";
+      "${time.month}-${time.day} ${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
 
   @override
   Widget build(BuildContext context) {

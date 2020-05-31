@@ -25,12 +25,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-def keystorePropertiesFile = rootProject.file("key.properties")
+def keystorePropertiesFile = rootProject.file("1key.properties")
 def keystoreProperties = new Properties()
 if(keystorePropertiesFile.exists()){
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
-else if(System.getenv('KEY_PATH')){
+else if(System.getenv('KEY_PATH')!=null){
     keystoreProperties.setProperty('storePassword', System.getenv('KEY_STORE_PASSWORD'));
     keystoreProperties.setProperty('keyPassword', System.getenv('KEY_PASSWORD'));
     keystoreProperties.setProperty('keyAlias', System.getenv('ALIAS'));
@@ -60,15 +60,17 @@ android {
 
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            if(keystorePropertiesFile.exists() || System.getenv('KEY_PATH')!=null){
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
     buildTypes {
         release {
-            if(keystorePropertiesFile.exists() || System.getenv('KEY_PATH')){
+            if(keystorePropertiesFile.exists() || System.getenv('KEY_PATH')!=null){
                 signingConfig signingConfigs.release
 
                 minifyEnabled true

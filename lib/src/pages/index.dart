@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../api/api.dart';
 import '../components/dateLine.dart';
@@ -27,8 +28,11 @@ class IndexState extends State<Index> {
   // 往前的日期
   int backDays = 0;
 
-  // 加载锁
+  // 加载锁，一次只发一个请求
   bool loadLock = false;
+
+  // 显示回到顶部
+  bool showFloatButton = false;
 
   ScrollController scrollController = ScrollController();
 
@@ -36,38 +40,68 @@ class IndexState extends State<Index> {
   void initState() {
     super.initState();
     appendNewsListBefore();
-    scrollController.addListener(() {
+    scrollController.addListener(() async {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
+        Fluttertoast.showToast(msg: "加载中...");
         appendNewsListBefore();
+      }
+      if (scrollController.position.pixels < 40 && showFloatButton) {
+        setState(() {
+          showFloatButton = false;
+        });
+      } else if (scrollController.position.pixels >= 40 && !showFloatButton) {
+        setState(() {
+          showFloatButton = true;
+        });
       }
     });
   }
 
-  void appendNewsListBefore() {
+  void appendNewsListBefore() async {
     if (loadLock) return;
     loadLock = true;
     final DateTime now = DateTime.now();
-    Api.getNewsList(time: now.add(Duration(days: -(backDays++))))
-        .then((result) {
+    try {
+      ZhDailyNewsList result =
+          await Api.getNewsList(time: now.add(Duration(days: -(backDays++))));
+      Fluttertoast.cancel();
       newsListsBefore.add(result);
       setState(() {
         newsListsBefore = newsListsBefore;
-        loadLock = false;
       });
-    }).catchError((error) {
-      print(error);
+    } catch (error) {
+      Fluttertoast.cancel();
+      Fluttertoast.showToast(msg: error.toString());
+    } finally {
       loadLock = false;
-    });
+    }
   }
 
   Widget render(Widget child) {
+    FloatingActionButton floatButton;
+    if (showFloatButton) {
+      floatButton = FloatingActionButton(
+        child: Image.asset(
+          'lib/src/assets/icon/top.png',
+          width: 25,
+          height: 25,
+        ),
+        onPressed: () {
+          scrollController.animateTo(0,
+              duration: Duration(seconds: 1), curve: Curves.easeOutCubic);
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("首页"),
       ),
       drawer: MyDrawer(),
       body: child,
+      floatingActionButton: floatButton,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 

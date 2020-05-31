@@ -76,7 +76,7 @@ class DetailState extends State<Detail> {
     const headColor = Color.fromRGBO(145, 111, 118, 1);
     Size size = MediaQuery.of(context).size;
 
-    double bottomHeight = 120;
+    double bottomHeight = 130;
 
     return render(Column(
       children: <Widget>[
@@ -87,10 +87,11 @@ class DetailState extends State<Detail> {
             children: [
               Stack(
                 children: <Widget>[
-                  Image(
-                    image: NetworkImage(headImageUrl ?? ""),
-                    width: size.width,
-                    height: size.height * 0.6,
+                  Container(
+                    child: Image(
+                      image: NetworkImage(headImageUrl ?? ""),
+                      width: size.width,
+                    ),
                   ),
                   Positioned(
                     child: Container(
@@ -171,7 +172,11 @@ class DetailState extends State<Detail> {
               Stack(
                 children: <Widget>[
                   IconButton(
-                    icon: Image.asset('lib/src/assets/icon/like.png'),
+                    icon: Image.asset(
+                      'lib/src/assets/icon/like.png',
+                      height: 30,
+                      width: 30,
+                    ),
                     onPressed: () {
                       Fluttertoast.showToast(msg: "暂不支持点赞");
                     },
@@ -189,6 +194,8 @@ class DetailState extends State<Detail> {
                   IconButton(
                     icon: Image.asset(
                       'lib/src/assets/icon/comment.png',
+                      width: 40,
+                      height: 40,
                     ),
                     onPressed: () {
                       Navigator.of(context)
