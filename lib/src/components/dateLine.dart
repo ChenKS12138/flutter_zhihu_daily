@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DateLine extends StatelessWidget {
-  DateLine({Key key, @required this.time}) : super(key: key);
+  DateLine({@required this.time});
 
   final DateTime time;
   String get month => this.time.month.toString();

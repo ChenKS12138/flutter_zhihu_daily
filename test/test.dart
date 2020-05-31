@@ -1,4 +1,3 @@
-import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parse;
 
 const String raw =

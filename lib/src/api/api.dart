@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../model/newsComment.dart';
 import '../model/newsDetail.dart';
@@ -18,7 +19,7 @@ class Api {
   }
 
   // 获取新闻列表
-  static Future<ZhDailyNewsList> getNewsList({DateTime time}) async {
+  static Future<ZhDailyNewsList> getNewsList({@required DateTime time}) async {
     final String dateString = time.year.toString() +
         time.month.toString().padLeft(2, "0") +
         time.day.toString().padLeft(2, "0");
@@ -33,19 +34,21 @@ class Api {
   }
 
   // 获取新闻的额外信息
-  static Future<ZhDailyNewsExtra> getNewsExtra({int id}) async {
+  static Future<ZhDailyNewsExtra> getNewsExtra({@required int id}) async {
     Response response = await instance.get("/story-extra/$id");
     return ZhDailyNewsExtra.fromJson(response.data);
   }
 
   // 获取新闻评论
-  static Future<ZhDailyNewsComment> getNewsLongComments({int id}) async {
-    Response response = await instance.get("/story/$id/short-comments");
+  static Future<ZhDailyNewsComment> getNewsLongComments(
+      {@required int id}) async {
+    Response response = await instance.get("/story/$id/long-comments");
     return ZhDailyNewsComment.fromJson(response.data);
   }
 
   // 获取新闻短评论
-  static Future<ZhDailyNewsComment> getNewsShortComments({int id}) async {
+  static Future<ZhDailyNewsComment> getNewsShortComments(
+      {@required int id}) async {
     Response response = await instance.get("/story/$id/short-comments");
     return ZhDailyNewsComment.fromJson(response.data);
   }
@@ -57,7 +60,7 @@ class Api {
   }
 
   // 获取新闻详情
-  static Future<ZhDailyNewsDetail> getNewsDetail({int id}) async {
+  static Future<ZhDailyNewsDetail> getNewsDetail({@required int id}) async {
     Response response = await instance.get("/news/$id");
     return ZhDailyNewsDetail.fromJson(response.data);
   }

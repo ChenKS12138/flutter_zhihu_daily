@@ -4,10 +4,12 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Drawer(
         child: ListView(
+          padding: EdgeInsets.only(top: 0),
           children: <Widget>[
-            DrawerHeader(
-              child: Container(
-                decoration: BoxDecoration(color: Colors.blueGrey),
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                "zhihu daily",
+                style: TextStyle(fontSize: 27),
               ),
             ),
             DrawerItem(text: '首页', routeName: 'index'),

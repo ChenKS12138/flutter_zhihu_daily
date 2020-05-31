@@ -4,7 +4,7 @@ import '../model/newsComment.dart';
 
 class NewsCommentItem extends StatelessWidget {
   final ZhDailyNewsCommentItem comment;
-  NewsCommentItem({this.comment});
+  NewsCommentItem({@required this.comment});
 
   convertDateText(DateTime time) =>
       "${time.month}-${time.day} ${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";

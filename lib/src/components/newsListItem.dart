@@ -4,7 +4,7 @@ import '../model/newsList.dart';
 
 class NewsListItem extends StatelessWidget {
   final ZhDailyNewsIntro intro;
-  NewsListItem({this.intro});
+  NewsListItem({@required this.intro});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

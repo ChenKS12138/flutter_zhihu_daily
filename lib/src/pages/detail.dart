@@ -49,6 +49,7 @@ class DetailState extends State<Detail> {
     });
     Api.getNewsExtra(id: widget.id).then((result) {
       setState(() {
+        print(result);
         likeCount = result.popularity;
         commentCount = result.comments;
       });
