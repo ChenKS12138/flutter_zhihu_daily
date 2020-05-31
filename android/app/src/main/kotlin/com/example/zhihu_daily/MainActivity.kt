@@ -1,4 +1,4 @@
-package com.example.zhihu_daily
+package com.chenks.zhihu_daily
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
